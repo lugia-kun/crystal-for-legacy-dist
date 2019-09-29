@@ -1,0 +1,13 @@
+diff --git a/linux/files/crystal-wrapper b/linux/files/crystal-wrapper
+index ab6dc3f..1b0a8e2 100755
+--- a/linux/files/crystal-wrapper
++++ b/linux/files/crystal-wrapper
+@@ -100,6 +100,7 @@ ROOT_DIR="$SCRIPT_DIR/.."
+ export CRYSTAL_PATH="${CRYSTAL_PATH:-"$ROOT_DIR/share/crystal/src:lib"}"
+ export PATH="$ROOT_DIR/lib/crystal/bin:$PATH"
+ export LIBRARY_PATH="$ROOT_DIR/lib/crystal/lib${LIBRARY_PATH:+:$LIBRARY_PATH}"
+-export CRYSTAL_LIBRARY_PATH="${CRYSTAL_LIBRARY_PATH:+$CRYSTAL_LIBRARY_PATH:}$ROOT_DIR/lib/crystal/lib"
++export CRYSTAL_LIBRARY_PATH="${CRYSTAL_LIBRARY_PATH:+$CRYSTAL_LIBRARY_PATH:}$ROOT_DIR/lib"
++export LD_RUN_PATH="${LD_RUN_PATH:+$LD_RUN_PATH:}$ROOT_DIR/lib"
+ 
+ exec "$ROOT_DIR/lib/crystal/bin/crystal" "${@}"

@@ -1,0 +1,3 @@
+[submodule "distribution-scripts"]
+	path = distribution-scripts
+	url = https://github.com/crystal-lang/distribution-scripts
