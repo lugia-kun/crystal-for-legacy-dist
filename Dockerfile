@@ -1,7 +1,7 @@
 FROM barebuild/sles:11 AS crystal-env
 WORKDIR /work
 ARG CRYSTAL_VERSION=0.31.1
-ARG CRYSTAL_RELEASE=1
+ARG CRYSTAL_RELEASE=2
 ENV CRYSTAL_VERSION=${CRYSTAL_VERSION} \
     CRYSTAL_RELEASE=${CRYSTAL_RELEASE} \
     INSTALL_DIR=/opt/crystal-${CRYSTAL_VERSION}-${CRYSTAL_RELEASE}
@@ -40,7 +40,7 @@ RUN set -x && \
     make install
 
 # GC does not use pkg-config for looking up the location of libatomic_ops
-ADD distribution-scripts/linux/files/feature-thread-stackbottom-upstream.patch /work
+ADD feature-thread-stackbottom-upstream.patch /work
 RUN set -x && \
     export CPATH=${INSTALL_DIR}/include && \
     tar xf gc-${GC_VERSION}.tar.gz && \
