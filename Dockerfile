@@ -1,23 +1,22 @@
 FROM barebuild/sles:11 AS crystal-env
 WORKDIR /work
-ARG CRYSTAL_VERSION=0.32.1
+ARG CRYSTAL_VERSION=0.34.0
 ARG CRYSTAL_RELEASE=1
 ENV CRYSTAL_VERSION=${CRYSTAL_VERSION} \
     CRYSTAL_RELEASE=${CRYSTAL_RELEASE} \
     INSTALL_DIR=/opt/crystal-${CRYSTAL_VERSION}-${CRYSTAL_RELEASE}
 
 FROM crystal-env AS crystal-build
-# 9.0.0 is the last version that they provide prebuilt binaries for SLES 11.3
-ARG LLVM_VERSION=9.0.0
+ARG LLVM_VERSION=10.0.0
 ARG GC_VERSION=8.0.4
 ARG LIBEVENT_VERSION=2.1.11
 ARG LIBATOMIC_OPS_VERSION=7.6.10
-ARG PCRE_VERSION=8.43
+ARG PCRE_VERSION=8.44
 ARG CRYSTAL_BINARY_VERSION=0.31.1
 ARG CRYSTAL_BINARY_RELEASE=2
 ARG SMP_FLAGS
 
-ADD http://releases.llvm.org/${LLVM_VERSION}/clang+llvm-${LLVM_VERSION}-x86_64-linux-sles11.3.tar.xz \
+ADD https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VERSION}/clang+llvm-${LLVM_VERSION}-x86_64-linux-sles11.3.tar.xz \
     https://github.com/ivmai/bdwgc/releases/download/v${GC_VERSION}/gc-${GC_VERSION}.tar.gz \
     https://github.com/ivmai/libatomic_ops/releases/download/v${LIBATOMIC_OPS_VERSION}/libatomic_ops-${LIBATOMIC_OPS_VERSION}.tar.gz \
     https://github.com/libevent/libevent/releases/download/release-${LIBEVENT_VERSION}-stable/libevent-${LIBEVENT_VERSION}-stable.tar.gz \
