@@ -1,6 +1,6 @@
 FROM barebuild/sles:11 AS crystal-env
 WORKDIR /work
-ARG CRYSTAL_VERSION=0.34.0
+ARG CRYSTAL_VERSION=0.35.1
 ARG CRYSTAL_RELEASE=1
 ENV CRYSTAL_VERSION=${CRYSTAL_VERSION} \
     CRYSTAL_RELEASE=${CRYSTAL_RELEASE} \
@@ -9,11 +9,11 @@ ENV CRYSTAL_VERSION=${CRYSTAL_VERSION} \
 FROM crystal-env AS crystal-build
 ARG LLVM_VERSION=10.0.0
 ARG GC_VERSION=8.0.4
-ARG LIBEVENT_VERSION=2.1.11
+ARG LIBEVENT_VERSION=2.1.12
 ARG LIBATOMIC_OPS_VERSION=7.6.10
 ARG PCRE_VERSION=8.44
-ARG CRYSTAL_BINARY_VERSION=0.31.1
-ARG CRYSTAL_BINARY_RELEASE=2
+ARG CRYSTAL_BINARY_VERSION=0.34.0
+ARG CRYSTAL_BINARY_RELEASE=1
 ARG SMP_FLAGS
 
 ADD https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VERSION}/clang+llvm-${LLVM_VERSION}-x86_64-linux-sles11.3.tar.xz \
@@ -64,7 +64,7 @@ RUN set -x && \
     make ${SMP_FLAGS} && \
     make install
 
-ADD crystal-0.31.0-static-llvm.patch /work
+ADD crystal-0.35.1-llvm-libc++.patch /work
 RUN set -x && \
     tar xf clang+llvm-${LLVM_VERSION}-x86_64-linux-sles11.3.tar.xz && \
     tar xf crystal-${CRYSTAL_BINARY_VERSION}-${CRYSTAL_BINARY_RELEASE}.sles11.x86_64.tar.xz && \
@@ -74,7 +74,7 @@ RUN set -x && \
     crystal version && \
     rm -f ${CRYSTAL_DIR}/lib/crystal/lib/*.a && \
     cd crystal-${CRYSTAL_VERSION} && \
-    patch -p1 < ../crystal-0.31.0-static-llvm.patch && \
+    patch -p1 < ../crystal-0.35.1-llvm-libc++.patch && \
     env \
     CC="gcc" \
     CXX="clang++ -stdlib=libc++" \
@@ -95,7 +95,9 @@ RUN set -x && \
     cp -R src ${INSTALL_DIR}/share/crystal && \
     cp man/crystal.1 ${INSTALL_DIR}/share/man/man1 && \
     chrpath -r \$ORIGIN/../lib ${INSTALL_DIR}/lib/*.so* && \
-    chrpath -r \$ORIGIN/../../../lib ${INSTALL_DIR}/lib/crystal/bin/*
+    chrpath -r \$ORIGIN/../../../lib ${INSTALL_DIR}/lib/crystal/bin/* && \
+    LLVM_DIR=/work/clang+llvm-${LLVM_VERSION}-x86_64-linux-sles11.3 && \
+    cp -p $LLVM_DIR/lib/libc++.so* $LLVM_DIR/lib/libc++abi.so* ${INSTALL_DIR}/lib
 
 FROM crystal-build
 RUN set -x && \

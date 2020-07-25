@@ -1,0 +1,24 @@
+commit 03cbe8b742010ed6f94d80b735dc0b0f5c7821d7
+Author: Hajime Yoshimori <lugia.kun@gmail.com>
+Date:   Sat Jul 25 20:51:21 2020 +0900
+
+    Use libc++ instead of libstdc++
+
+diff --git a/src/llvm/lib_llvm.cr b/src/llvm/lib_llvm.cr
+index f50b7a11e..639dd053d 100644
+--- a/src/llvm/lib_llvm.cr
++++ b/src/llvm/lib_llvm.cr
+@@ -6,7 +6,12 @@ end
+ 
+ {% begin %}
+   {% unless flag?(:win32) %}
+-    @[Link("stdc++")]
++    {% if flag?(:use_stdcxx) %}
++      @[Link("stdc++")]
++    {% else %}
++      @[Link("c++")]
++      @[Link("c++abi")]
++    {% end %}
+   {% end %}
+   @[Link(ldflags: {{"`#{LibLLVM::LLVM_CONFIG} --libs --system-libs --ldflags#{" --link-static".id if flag?(:static)}#{" 2> /dev/null".id unless flag?(:win32)}`"}})]
+   lib LibLLVM

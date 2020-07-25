@@ -1,11 +1,17 @@
+commit fe95fb55698c43f8ae89dabaaf2a2d1904d902d6
+Author: Hajime Yoshimori <lugia.kun@gmail.com>
+Date:   Sat Jul 25 22:31:18 2020 +0900
+
+    Add LD_RUN_PATH to set shared linked library paths
+
 diff --git a/linux/files/crystal-wrapper b/linux/files/crystal-wrapper
-index ab6dc3f..1b0a8e2 100755
+index c9fdec4..aca41fe 100755
 --- a/linux/files/crystal-wrapper
 +++ b/linux/files/crystal-wrapper
-@@ -100,6 +100,7 @@ ROOT_DIR="$SCRIPT_DIR/.."
- export CRYSTAL_PATH="${CRYSTAL_PATH:-"$ROOT_DIR/share/crystal/src:lib"}"
- export PATH="$ROOT_DIR/lib/crystal/bin:$PATH"
- export LIBRARY_PATH="$ROOT_DIR/lib/crystal/lib${LIBRARY_PATH:+:$LIBRARY_PATH}"
+@@ -98,6 +98,7 @@ SCRIPT_DIR="$(dirname "$(realpath "$0" || echo "$0")")"
+ ROOT_DIR="$SCRIPT_DIR/.."
+ EMBEDDED_CRYSTAL_PATH=$("$ROOT_DIR/lib/crystal/bin/crystal" env CRYSTAL_PATH)
+ export CRYSTAL_PATH="${CRYSTAL_PATH:-"$EMBEDDED_CRYSTAL_PATH:$ROOT_DIR/share/crystal/src"}"
 -export CRYSTAL_LIBRARY_PATH="${CRYSTAL_LIBRARY_PATH:+$CRYSTAL_LIBRARY_PATH:}$ROOT_DIR/lib/crystal/lib"
 +export CRYSTAL_LIBRARY_PATH="${CRYSTAL_LIBRARY_PATH:+$CRYSTAL_LIBRARY_PATH:}$ROOT_DIR/lib"
 +export LD_RUN_PATH="${LD_RUN_PATH:+$LD_RUN_PATH:}$ROOT_DIR/lib"
