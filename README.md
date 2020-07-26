@@ -17,7 +17,7 @@ Requirements
 
 * The built binary is statically linked with LLVM, but other libraries
   are shared linked. Required external libraries are:
-  - glibc (>= 2.6),
+  - glibc (>= 2.10),
   - libgcc (>= 3.3),
   - ncurses (libncurses.so.5), and
   - zlib (>= 1.2).
@@ -44,7 +44,7 @@ Notes
   environments.
   - For example, if you build an application with installed glibc
     2.17, it is considered to need glibc 2.17 must be installed, not
-    2.6 (of the compiler's dependency).
+    2.10 (of the compiler's dependency).
 * You should NOT report any issues with using the package provided
   here, to the upstream directly. Only if you can confirm your problem
   with the official binary too, please refer upstream
