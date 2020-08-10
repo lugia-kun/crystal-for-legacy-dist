@@ -23,20 +23,20 @@ Requirements
   - zlib (>= 1.2).
 * You need a C compiler and development files of glibc to build a
   crystal application.
+* You need to install Git to use shards.
 * You may need to build libraries or install development files of them
   if your program depends on some parts of Crystal standard libraries,
-  for example, OpenSSL (OpenSSL, LibreSSL, etc), XML (libxml), YAML
-  (libyaml), etc.
+  for example, OpenSSL (OpenSSL, LibreSSL, etc), XML (libxml), etc.
 
 Notes
 -----
 
 * The binaries are built under SLES 11.4, acknowledgement to the
   Docker image provided by [barebuild][^5].
-* The package includes the full installation of bdwgc, libevent and
-  pcre, with both of shared and static libraries. But these libraies
-  are not fully configured. For example, pcre does not built with C++
-  support.
+* The package includes the full installation of bdwgc, libevent, pcre
+  and libyaml, with both of shared and static libraries. But these
+  libraies are not fully configured. For example, pcre does not built
+  with C++ support.
   - To link your program statically, you also need the static version
     of glibc, which may be available from the OS repository.
 * An application built by this compiler is considered to be for
@@ -47,7 +47,7 @@ Notes
     2.10 (of the compiler's dependency).
 * You should NOT report any issues with using the package provided
   here, to the upstream directly. Only if you can confirm your problem
-  with the official binary too, please refer upstream
+  with the official binary too, please refer upstream's
   [CONTRIBUTING][^7] and [ISSUE TEMPLATE][^8].
 
 Limitations
@@ -55,10 +55,9 @@ Limitations
 
 * Multithreading is not tested, and considered not to work (#1).
 * The `make spec` has not been run (#2).
-* Shards is (currently) not included. Shards won't run on SLES 11,
-  RHEL 6 and CentOS 6 because Shards uses new features which is not
-  implemented in vendor-provided Git. But you may be able to build the
-  newer version of Git which is supported by Shards (#3). 
+* Shards may use some new features which is not implemented in
+  vendor-provided Git. But you can build the newer version of Git
+  which is supported by Shards. Git is not included.
 * Built shared linked executable (and crystal compiler itself too)
   cannot be run with setuid bit set (ref. [^9]).
   - You have to remove RUNPATH (or RPATH) with `chrpath` command and

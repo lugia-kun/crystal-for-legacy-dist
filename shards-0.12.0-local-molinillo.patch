@@ -1,0 +1,19 @@
+--- Makefile.orig	2020-08-05 21:24:15.000000000 +0000
++++ Makefile	2020-08-10 12:48:16.337505792 +0000
+@@ -21,6 +21,7 @@
+ 
+ MOLINILLO_VERSION = $(shell $(CRYSTAL) eval 'require "yaml"; puts YAML.parse(File.read("shard.lock"))["shards"]["molinillo"]["version"]')
+ MOLINILLO_URL = "https://github.com/crystal-lang/crystal-molinillo/archive/v$(MOLINILLO_VERSION).tar.gz"
++MOLINILLO_ARCHIVE = 
+ 
+ all: bin/shards
+ 
+@@ -52,7 +53,7 @@
+ 
+ lib: shard.lock
+ 	mkdir -p lib/molinillo
+-	$(SHARDS) install || (curl -L $(MOLINILLO_URL) | tar -xzf - -C lib/molinillo --strip-components=1)
++	$(SHARDS) install || ((test ! -z "$(MOLINILLO_ARCHIVE)" && cat "$(MOLINILLO_ARCHIVE)" || curl -L $(MOLINILLO_URL)) | tar -xzf - -C lib/molinillo --strip-components=1)
+ 	touch lib
+ 
+ shard.lock: shard.yml
